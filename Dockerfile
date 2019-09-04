@@ -7,7 +7,8 @@ RUN go get -u github.com/gobuffalo/packr/v2/packr2 && \
 COPY static /work
 COPY main.go /work
 RUN packr2 build && \
-  CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags '-w -s' -o main .
+  CGO_ENABLED=0 GOOS=linux GOARCH=386 go build \
+  -ldflags '-extldflags "-static" -w -s' -o main .
 
 FROM scratch
 COPY --from=builder /work/main /main
